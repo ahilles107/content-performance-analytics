@@ -4,12 +4,12 @@ Content Performance Analytics
 TODO:
 
 - add content to monitor
- - api
+    - api
 - fetch content data:
- - social data (facebook likes, tweets, wykop, redit)
- - pageviews
- - scroll depth
- - bounce rate
- - time on screen
- - comments number
- - ?bought subscriptions?
+    - social data (facebook likes, tweets, wykop, redit)
+    - pageviews
+    - scroll depth
+    - bounce rate
+    - time on screen
+    - comments number
+    - ?bought subscriptions?
