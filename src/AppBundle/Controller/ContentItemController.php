@@ -9,6 +9,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use AppBundle\Entity\ContentItem;
 use AppBundle\Form\ContentItemType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * ContentItem controller.
@@ -46,7 +47,7 @@ class ContentItemController extends FOSRestController
      *
      * @ApiDoc(
      *     statusCodes={
-     *         202="Returned when successful"
+     *         201="Returned when successful"
      *     },
      *     input={
      *         "class"="\AppBundle\Form\ContentItemType"
@@ -67,7 +68,62 @@ class ContentItemController extends FOSRestController
             $em->persist($contentItem);
             $em->flush();
 
-            $view = $this->view($contentItem, 202);
+            $view = $this->view($contentItem, 201);
+        } else {
+            $view = $this->view($form, 200);
+        }
+
+        $view->setFormat('json');
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * Update values for ContentItems.
+     *
+     *
+     * @ApiDoc(
+     *     statusCodes={
+     *         200="Returned when successful"
+     *     },
+     *     tags={
+     *         "in-development"
+     *     },
+     *     parameters={
+     *         {"name"="form[type]", "dataType"="string", "required"="true", "description"="Possible types: views|bounce_rate|avg_time_on_page"},
+     *         {"name"="form[value]", "dataType"="integer", "required"="true", "description"="Value"}
+     *     }
+     * )
+     */
+    public function valuesAction(Request $request, ContentItem $contentItem)
+    {
+        $form = $this->createFormBuilder([], array(
+                'csrf_protection' => false,
+            ))
+            ->add('type', TextType::class)
+            ->add('value', TextType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+        dump($form, $form->isSubmitted(), $form->isValid());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+
+            switch ($data['type']) {
+                case 'views':
+                    $contentItem->setVisits($data['value']);
+                    break;
+                case 'bounce_rate':
+                    $contentItem->setBounceRate($data['value']);
+                    break;
+                case 'avg_time_on_page':
+                    $contentItem->setAvgTimeOnPage($data['value']);
+                    break;
+            }
+
+            $em->flush();
+            $view = $this->view($contentItem, 200);
         } else {
             $view = $this->view($form, 200);
         }

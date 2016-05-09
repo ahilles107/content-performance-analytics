@@ -18,6 +18,11 @@ content_edit:
     defaults: { _controller: "AppBundle:ContentItem:edit" }
     methods:  [POST]
 
+content_values:
+    path:     /{id}/values
+    defaults: { _controller: "AppBundle:ContentItem:values" }
+    methods:  [POST]
+
 content_delete:
     path:     /{id}/
     defaults: { _controller: "AppBundle:ContentItem:delete" }
