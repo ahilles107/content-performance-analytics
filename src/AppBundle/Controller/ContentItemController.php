@@ -105,7 +105,6 @@ class ContentItemController extends FOSRestController
             ->getForm();
 
         $form->handleRequest($request);
-        dump($form, $form->isSubmitted(), $form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $data = $form->getData();
