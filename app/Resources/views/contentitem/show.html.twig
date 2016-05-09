@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>ContentItem</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contentItem.id }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ contentItem.url }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ contentItem.title }}</td>
+            </tr>
+            <tr>
+                <th>Publisheddate</th>
+                <td>{{ contentItem.publishedDate }}</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ contentItem.author }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('content_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('content_edit', { 'id': contentItem.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,45 @@
+AppBundle\Entity\ContentItem:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ContentItemRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        url:
+            type: string
+            length: '1000'
+            unique: true
+        title:
+            type: string
+            length: 255
+        publishedDate:
+            type: datetimetz
+            column: published_date
+        author:
+            type: string
+            length: 255
+            nullable: true
+        visits:
+            type: integer
+            nullable: true
+        bounceRate:
+            type: float
+            nullable: true
+        avgTimeOnPage:
+            type: float
+            nullable: true
+        visitsPoints:
+            type: integer
+            nullable: true
+        bounceRatePoints:
+            type: integer
+            nullable: true
+        avgTimeOnPagePoints:
+            type: integer
+            nullable: true
+
+    lifecycleCallbacks: {  }

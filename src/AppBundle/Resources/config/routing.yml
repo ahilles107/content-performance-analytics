@@ -1,0 +1,7 @@
+app_content:
+    resource: "@AppBundle/Resources/config/routing/contentitem.yml"
+    prefix:   /content
+app_index:
+    path:     /
+    defaults: { _controller: "AppBundle:Default:index" }
+    methods:  GET

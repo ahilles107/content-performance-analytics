@@ -1,0 +1,24 @@
+content_index:
+    path:     /
+    defaults: { _controller: "AppBundle:ContentItem:index" }
+    methods:  GET
+
+content_show:
+    path:     /{id}/
+    defaults: { _controller: "AppBundle:ContentItem:show" }
+    methods:  GET
+
+content_new:
+    path:     /
+    defaults: { _controller: "AppBundle:ContentItem:new" }
+    methods:  [POST]
+
+content_edit:
+    path:     /{id}/
+    defaults: { _controller: "AppBundle:ContentItem:edit" }
+    methods:  [POST]
+
+content_delete:
+    path:     /{id}/
+    defaults: { _controller: "AppBundle:ContentItem:delete" }
+    methods:  DELETE
