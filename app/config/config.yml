@@ -68,3 +68,13 @@ swiftmailer:
     spool:     { type: memory }
 
 nelmio_api_doc: ~
+
+jms_serializer:
+    metadata:
+        directories:
+            KnpPaginatorBundle:
+                namespace_prefix: Knp\Bundle\PaginatorBundle
+                path: %kernel.root_dir%/config/serializer/KnpPaginatorBundle
+            KnpPager:
+                namespace_prefix: Knp\Component\Pager
+                path: %kernel.root_dir%/config/serializer/KnpPager

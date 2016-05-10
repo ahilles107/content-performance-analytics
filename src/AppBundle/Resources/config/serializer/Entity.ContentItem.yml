@@ -1,0 +1,32 @@
+AppBundle\Entity\ContentItem:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            type: integer
+        url:
+            expose: true
+            type: string
+        title:
+            expose: true
+            type: string
+        publishedDate:
+            expose: true
+            type: DateTime
+        author:
+            expose: true
+            type: string
+        visitsPoints:
+            expose: true
+            type: integer
+        bounceRatePoints:
+            expose: true
+            type: integer
+        avgTimeOnPagePoints:
+            expose: true
+            type: integer
+        totalPoints:
+            access_type: public_method
+            read_only: true
+            expose: true
+            type: integer
