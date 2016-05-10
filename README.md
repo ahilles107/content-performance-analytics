@@ -13,7 +13,7 @@ max_points_views: 10
 max_points_bounce_rate: 20
 max_points_avg_time_on_page: 12
 
-# set custom newsroom values for "OK" (51%) results
+# set custom newsroom values for "OK" (60%) results
 good_value_views: 400
 good_value_bounce_rate: 1.5
 good_value_avg_time_on_page: 50
