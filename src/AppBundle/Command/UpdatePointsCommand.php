@@ -24,8 +24,7 @@ class UpdatePointsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        //TODO: get only articles older than one 6 hours and youger than 7 days
-        $contentItems = $em->getRepository('AppBundle:ContentItem')->findAll();
+        $contentItems = $em->getRepository('AppBundle:ContentItem')->getMaintainedItems()->getResult();
 
         $maxPointsViews = $this->getContainer()->getParameter('max_points_views');
         $goodValueViews = $this->getContainer()->getParameter('good_value_views');
@@ -42,6 +41,8 @@ class UpdatePointsCommand extends ContainerAwareCommand
             $item->setVisitsPoints($pointsForVisits);
             $item->setBounceRatePoints($pointsForBounceRate);
             $item->setAvgTimeOnPagePoints($pointsForAvgTimeOnPage);
+            $item->setPointsCalculatedDate(new \DateTime());
+
             $rows[] = array(
                 $item->getUrl(),
                 $item->getVisits(),

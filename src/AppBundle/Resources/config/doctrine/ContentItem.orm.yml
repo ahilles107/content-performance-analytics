@@ -41,5 +41,13 @@ AppBundle\Entity\ContentItem:
         avgTimeOnPagePoints:
             type: integer
             nullable: true
+        valuesUpdatedDate:
+            type: datetimetz
+            column: values_updated_date
+            nullable: true
+        pointsCalculatedDate:
+            type: datetimetz
+            column: points_calculated_date
+            nullable: true
 
     lifecycleCallbacks: {  }

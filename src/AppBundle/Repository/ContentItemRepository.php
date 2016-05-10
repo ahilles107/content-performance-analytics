@@ -10,4 +10,52 @@ namespace AppBundle\Repository;
  */
 class ContentItemRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get Query for content items valid for update.
+     *
+     * @param integer $maxResults
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function getValidContentItems($maxResults = 2)
+    {
+        $publishDate = new \DateTime();
+        $valuesUpdatedDate = new \DateTime();
+        $publishDate->modify('-30 days');
+        $valuesUpdatedDate->modify('-2 hours');
+
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.publishedDate >= :publishDate')
+            ->andWhere('c.valuesUpdatedDate <= :valuesUpdatedDate')
+            ->setParameters([
+                'publishDate' => $publishDate,
+                'valuesUpdatedDate' => $valuesUpdatedDate
+            ])
+            ->setMaxResults($maxResults);
+
+        return $qb->getQuery();
+    }
+
+    /**
+     * Get Query for content items valid for points recalculation.
+     *
+     * @param integer $maxResults
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function getMaintainedItems($maxResults = 2)
+    {
+        $publishDate = new \DateTime();
+        $publishDate->modify('-7 days');
+
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.publishedDate >= :publishDate')
+            ->andWhere('c.pointsCalculatedDate <= c.valuesUpdatedDate')
+            ->setParameters([
+                'publishDate' => $publishDate,
+            ])
+            ->setMaxResults($maxResults);
+
+        return $qb->getQuery();
+    }
 }

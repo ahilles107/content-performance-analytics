@@ -68,6 +68,22 @@ class ContentItem
     protected $totalPoints;
 
     /**
+     * @var \DateTime
+     */
+    protected $valuesUpdatedDate;
+
+    /**
+     * @var \DateTime
+     */
+    protected $pointsCalculatedDate;
+
+    public function __construct()
+    {
+        $this->valuesUpdatedDate = new \DateTime();
+        $this->pointsCalculatedDate = new \DateTime();
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -320,5 +336,53 @@ class ContentItem
     public function getTotalPoints()
     {
         return $this->getVisitsPoints() + $this->getBounceRatePoints() + $this->getAvgTimeOnPagePoints();
+    }
+
+    /**
+     * Set valuesUpdatedDate
+     *
+     * @param \DateTime $valuesUpdatedDate
+     *
+     * @return ContentItem
+     */
+    public function setValuesUpdatedDate(\DateTime $valuesUpdatedDate)
+    {
+        $this->valuesUpdatedDate = $valuesUpdatedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get valuesUpdatedDate
+     *
+     * @return \DateTime
+     */
+    public function getValuesUpdatedDate()
+    {
+        return $this->valuesUpdatedDate;
+    }
+
+    /**
+     * Set pointsCalculatedDate
+     *
+     * @param \DateTime $pointsCalculatedDate
+     *
+     * @return ContentItem
+     */
+    public function setPointsCalculatedDate(\DateTime $pointsCalculatedDate)
+    {
+        $this->pointsCalculatedDate = $pointsCalculatedDate;
+
+        return $this;
+    }
+
+    /**
+     * Get pointsCalculatedDate
+     *
+     * @return \DateTime
+     */
+    public function getPointsCalculatedDate()
+    {
+        return $this->pointsCalculatedDate;
     }
 }

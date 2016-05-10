@@ -28,12 +28,9 @@ class FetchGADataCommand extends ContainerAwareCommand
         $privateKeyFile = $this->getContainer()->getParameter('kernel.root_dir').'/../bin/ga_p12_key/certificate.p12';
         $httpAdapter = new CurlHttpAdapter();
         $client = new Client($clientId, $privateKeyFile, $httpAdapter);
-
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        //TODO: get only articles older than one 6 hours and youger than 7 days
-        $contentItems = $em->getRepository('AppBundle:ContentItem')->findAll();
-
+        $contentItems = $em->getRepository('AppBundle:ContentItem')->getValidContentItems()->getResult();
         $rows = [];
         foreach ($contentItems as $key => $item) {
             $service = new Service($client);
@@ -41,6 +38,7 @@ class FetchGADataCommand extends ContainerAwareCommand
             $item->setVisits($response->getTotalsForAllResults()['ga:visits']);
             $item->setBounceRate($response->getTotalsForAllResults()['ga:bounceRate']);
             $item->setAvgTimeOnPage($response->getTotalsForAllResults()['ga:avgTimeOnPage']);
+            $item->setValuesUpdatedDate(new \DateTime());
 
             $rows[] = array(
                 $item->getUrl(),
@@ -63,7 +61,7 @@ class FetchGADataCommand extends ContainerAwareCommand
     private function getQuery($profileId, $path)
     {
         $query = new Query($profileId);
-        $query->setStartDate(new \DateTime('-30days'));
+        $query->setStartDate(new \DateTime('-1year'));
         $query->setEndDate(new \DateTime());
         // See https://developers.google.com/analytics/devguides/reporting/core/dimsmets
         $query->setMetrics(array('ga:visits' ,'ga:bounceRate', 'ga:avgTimeOnPage'));

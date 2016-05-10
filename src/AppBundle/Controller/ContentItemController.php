@@ -120,6 +120,7 @@ class ContentItemController extends FOSRestController
                     $contentItem->setAvgTimeOnPage($data['value']);
                     break;
             }
+            $contentItem->setValuesUpdatedDate(new \DateTime());
 
             $em->flush();
             $view = $this->view($contentItem, 200);
