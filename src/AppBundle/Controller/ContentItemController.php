@@ -30,11 +30,19 @@ class ContentItemController extends FOSRestController
      *     }
      * )
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $paginator = $this->get('knp_paginator');
 
-        $contentItems = $em->getRepository('AppBundle:ContentItem')->findAll();
+        $contentItems = $em->getRepository('AppBundle:ContentItem')->getItems();
+
+        $contentItems = $paginator->paginate(
+            $contentItems,
+            $request->query->getInt('page', 1),
+            10
+        );
+
         $view = $this->view($contentItems, 200)
             ->setFormat('json');
 

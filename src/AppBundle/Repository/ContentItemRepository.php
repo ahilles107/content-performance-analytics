@@ -11,13 +11,25 @@ namespace AppBundle\Repository;
 class ContentItemRepository extends \Doctrine\ORM\EntityRepository
 {
     /**
+     * Get Query for content items ordered by publishedDate.
+     *
+     * @return \Doctrine\ORM\Query
+     */
+    public function getItems()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb->getQuery();
+    }
+
+    /**
      * Get Query for content items valid for update.
      *
      * @param integer $maxResults
      *
      * @return \Doctrine\ORM\Query
      */
-    public function getValidContentItems($maxResults = 2)
+    public function getValidContentItems($maxResults = 15)
     {
         $publishDate = new \DateTime();
         $valuesUpdatedDate = new \DateTime();
@@ -43,7 +55,7 @@ class ContentItemRepository extends \Doctrine\ORM\EntityRepository
      *
      * @return \Doctrine\ORM\Query
      */
-    public function getMaintainedItems($maxResults = 2)
+    public function getMaintainedItems($maxResults = 15)
     {
         $publishDate = new \DateTime();
         $publishDate->modify('-7 days');
