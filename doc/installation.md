@@ -23,7 +23,7 @@ $ sudo mv composer.phar /usr/local/bin/composer
 ```
 composer create-project "ahilles107/content-performance-analytics" -s dev
 ```
-Installer will ask you about `database`, `max_points_*` and `good_value_*` and `google analytics` settings.
+Installer will ask you about `database`, `max_points_*` and `good_value_*` and `google analytics` ([how to get google analytics settings?](../doc/google_analytics_authentication.md)) settings.
 
 ## Run application
 
