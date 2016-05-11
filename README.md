@@ -3,12 +3,20 @@ Content Performance Analytics
 
 Calculate articles performance score. Inspired by [Die Welt’s analytics system][1].
 
-Application can work independently from current organization CMS. New content items can be added to system by API (with google spreadsheet - when implemented).
+## How it works?
 
-Monitored content listing screenshot:
+Every news organisation has different criteria by which to judge the success of its content. For some, page views are most important, for others, video views, or users' comments. This application enables the definition of maximum and satisfactory values for each of several measurable criteria (to date: views, bounce rate, and average time on page). With these values, a rating is calculated for each item of content which can be monitored (each article). These ratings can then be shared with editors to enable them to make improvements.
+
+The application functions independently of the organisation's CMS. New content items can be registered with the application using an API. This will also be possible in the future with a google spreadsheet.
+
+#### Monitored content listing screenshot:
 ![Monitored content](app/Resources/screenshot.png?raw=true "Content Performance Analytics - Monitored content")
 
-Content settings:
+## Documentation:
+
+* [Installation][2]
+
+##### Content settings:
 
 ````
 # app/config/parameters.yml
@@ -43,3 +51,4 @@ Features:
     - [ ] ?bought subscriptions?
 
 [1]: http://www.niemanlab.org/2016/05/die-welts-analytics-system-de-emphasizes-clicks-and-demystifies-what-it-considers-a-quality-story/
+[2]: doc/installation.md
