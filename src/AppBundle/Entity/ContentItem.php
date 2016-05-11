@@ -333,9 +333,26 @@ class ContentItem
         return $this->avgTimeOnPagePoints;
     }
 
+    /**
+     * Get totalPoints
+     *
+     * @return integer
+     */
     public function getTotalPoints()
     {
-        return $this->getVisitsPoints() + $this->getBounceRatePoints() + $this->getAvgTimeOnPagePoints();
+        return $this->totalPoints;
+    }
+
+    /**
+     * Set totalPoints
+     *
+     * @param integer totalPoints
+     *
+     * @return ContentItem
+     */
+    public function setTotalPoints($totalPoints)
+    {
+        return $this->totalPoints = $totalPoints;
     }
 
     /**

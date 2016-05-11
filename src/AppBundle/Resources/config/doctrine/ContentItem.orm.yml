@@ -41,6 +41,9 @@ AppBundle\Entity\ContentItem:
         avgTimeOnPagePoints:
             type: integer
             nullable: true
+        totalPoints:
+            type: integer
+            nullable: true
         valuesUpdatedDate:
             type: datetimetz
             column: values_updated_date

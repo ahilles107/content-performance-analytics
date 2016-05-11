@@ -42,6 +42,11 @@ class UpdatePointsCommand extends ContainerAwareCommand
             $item->setBounceRatePoints($pointsForBounceRate);
             $item->setAvgTimeOnPagePoints($pointsForAvgTimeOnPage);
             $item->setPointsCalculatedDate(new \DateTime());
+            $item->setTotalPoints(
+                $item->getVisitsPoints() +
+                $item->getBounceRatePoints() +
+                $item->getAvgTimeOnPagePoints()
+            );
 
             $rows[] = array(
                 $item->getUrl(),
