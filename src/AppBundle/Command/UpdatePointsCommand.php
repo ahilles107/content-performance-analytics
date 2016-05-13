@@ -5,10 +5,6 @@ namespace AppBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Widop\GoogleAnalytics\Query;
-use Widop\GoogleAnalytics\Client;
-use Widop\HttpAdapter\CurlHttpAdapter;
-use Widop\GoogleAnalytics\Service;
 use Symfony\Component\Console\Helper\Table;
 
 class UpdatePointsCommand extends ContainerAwareCommand
@@ -56,7 +52,7 @@ class UpdatePointsCommand extends ContainerAwareCommand
                 $pointsForBounceRate,
                 $item->getAvgTimeOnPage(),
                 $pointsForAvgTimeOnPage,
-                $pointsForVisits + $pointsForBounceRate + $pointsForAvgTimeOnPage
+                $pointsForVisits + $pointsForBounceRate + $pointsForAvgTimeOnPage,
             );
         }
 
@@ -73,26 +69,26 @@ class UpdatePointsCommand extends ContainerAwareCommand
     private function calculatePointsForVisits($item, $maxPoints, $goodValue)
     {
         $viewsNumber = $item->getVisits();
-        $goodPoint = round($maxPoints/2) + 1;
-        $points = ($viewsNumber*$goodPoint) / $goodValue;
+        $treshold = ($maxPoints * 60) / 100;
+        $points = ($viewsNumber * $treshold) / $goodValue;
 
         return $points >= $maxPoints ? $maxPoints : round($points);
     }
 
     private function calculatePointsForBounceRate($item, $maxPoints, $goodValue)
     {
-        $bounceRateNumber =  $item->getBounceRate();
-        $goodPoint = round($maxPoints/2) + 1;
-        $points = $maxPoints - (($bounceRateNumber*$goodPoint) / $goodValue);
+        $bounceRateNumber = $item->getBounceRate();
+        $treshold = ($maxPoints * 60) / 100;
+        $points = $maxPoints - (($bounceRateNumber * $treshold) / $goodValue);
 
-        return $points >= $maxPoints ? $maxPoints : round($points) <= 0 ? 0 : round($points);
+        return $points <= 0 ? $maxPoints : round($points) <= 0 ? 0 : round($points);
     }
 
     private function calculatePointsForAvgTimeOnPage($item, $maxPoints, $goodValue)
     {
-        $avgTimeOnPage =  $item->getAvgTimeOnPage();
-        $goodPoint = round($maxPoints/2) + 1;
-        $points = ($avgTimeOnPage*$goodPoint) / $goodValue;
+        $avgTimeOnPage = $item->getAvgTimeOnPage();
+        $treshold = ($maxPoints * 60) / 100;
+        $points = ($avgTimeOnPage * $treshold) / $goodValue;
 
         return $points >= $maxPoints ? $maxPoints : round($points);
     }
