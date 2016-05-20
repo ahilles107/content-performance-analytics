@@ -34,14 +34,14 @@ class FetchGADataCommand extends ContainerAwareCommand
         $rows = [];
         foreach ($contentItems as $key => $item) {
             $service = new Service($client);
-            $response = $service->query($this->getQuery($profileId, $item->getUrl()));
+            $response = $service->query($this->getQuery($profileId, $item->getGaPath()));
             $item->setVisits($response->getTotalsForAllResults()['ga:visits']);
             $item->setBounceRate($response->getTotalsForAllResults()['ga:bounceRate']);
             $item->setAvgTimeOnPage($response->getTotalsForAllResults()['ga:avgTimeOnPage']);
             $item->setValuesUpdatedDate(new \DateTime());
 
             $rows[] = array(
-                $item->getUrl(),
+                $item->getGaPath(),
                 $item->getVisits(),
                 $item->getBounceRate(),
                 $item->getAvgTimeOnPage(),

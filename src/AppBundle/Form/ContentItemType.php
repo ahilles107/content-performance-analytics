@@ -15,7 +15,8 @@ class ContentItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('url')
+            ->add('gaPath')
+            ->add('publicUrl')
             ->add('title')
             ->add('publishedDate', 'Symfony\Component\Form\Extension\Core\Type\DateTimeType', array(
                 'widget' => 'single_text',

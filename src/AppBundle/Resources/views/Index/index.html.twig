@@ -20,14 +20,11 @@ table.dataTable thead .sorting_desc_disabled:after {
 <div class="container-fluid">
     <h1>Monitored content listing</h1>
     <div class="row">
-        <!-- <div class="col-md-2">sadf sadf sad</div> -->
         <div class="col-md-12">
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <!-- <th>Id</th> -->
                         <th>Published date</th>
-                        <!-- <th>Url</th> -->
                         <th>Title</th>
                         <th>Author</th>
                         <th>Visits</th>
@@ -38,9 +35,7 @@ table.dataTable thead .sorting_desc_disabled:after {
                 </thead>
                 <tfoot>
                     <tr>
-                        <!-- <th>Id</th> -->
                         <th>Published date</th>
-                        <!-- <th>Url</th> -->
                         <th>Title</th>
                         <th>Author</th>
                         <th>Visits</th>
@@ -56,7 +51,12 @@ table.dataTable thead .sorting_desc_disabled:after {
 <script>
 $(document).ready(function() {
     $('#example').DataTable({
-        columnDefs: [
+        "paging": true,
+        "serverSide": true,
+        "searching": false,
+        "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
+        "pageLength": 10,
+        "columnDefs": [
             {
                 targets: [ 0, 1, 2 ],
                 className: 'mdl-data-table__cell--non-numeric'
@@ -64,10 +64,16 @@ $(document).ready(function() {
         ],
         "ajax": {
             "url": "/content",
-            "dataSrc": "items"
+            dataFilter: function(data){
+                var json = jQuery.parseJSON( data );
+                json.recordsTotal = json.totalItems;
+                json.recordsFiltered = json.totalItems;
+                json.data = json.items;
+
+                return JSON.stringify( json ); // return JSON string
+            }
         },
         "columns": [
-            // { "data": "id" },
             {
                 "data": "published_date",
                 "render": function (data) {
@@ -76,12 +82,26 @@ $(document).ready(function() {
                     return (month.length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
                 }
             },
-            // { "data": "url" },
             { "data": "title" },
             { "data": "author" },
-            { "data": "visits_points" },
-            { "data": "bounce_rate_points" },
-            { "data": "avg_time_on_page_points" },
+            {
+                "data": "visits_points",
+                "render": function (visits_points, action, data) {
+                    return visits_points + " <small>("+ data.visits +")</small>";
+                }
+            },
+            {
+                "data": "bounce_rate_points",
+                "render": function (bounce_rate_points, action, data) {
+                    return bounce_rate_points + " <small>("+ parseFloat(data.bounce_rate.toFixed(3)) +")</small>";
+                }
+            },
+            {
+                "data": "avg_time_on_page_points",
+                "render": function (avg_time_on_page_points, action, data) {
+                    return avg_time_on_page_points + " <small>("+ parseFloat(data.avg_time_on_page.toFixed(3)) +")</small>";
+                }
+            },
             { "data": "total_points" }
         ]
     });

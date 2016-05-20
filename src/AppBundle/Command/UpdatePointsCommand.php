@@ -45,7 +45,7 @@ class UpdatePointsCommand extends ContainerAwareCommand
             );
 
             $rows[] = array(
-                $item->getUrl(),
+                $item->getGaPath(),
                 $item->getVisits(),
                 $pointsForVisits,
                 $item->getBounceRate(),

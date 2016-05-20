@@ -9,10 +9,14 @@ AppBundle\Entity\ContentItem:
             generator:
                 strategy: AUTO
     fields:
-        url:
+        gaPath:
             type: string
             length: '1000'
             unique: true
+        publicUrl:
+            type: string
+            length: '1000'
+            nullable: true
         title:
             type: string
             length: 255

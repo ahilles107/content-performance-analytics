@@ -15,7 +15,12 @@ class ContentItem
     /**
      * @var string
      */
-    protected $url;
+    protected $publicUrl;
+
+    /**
+     * @var string
+     */
+    protected $gaPath;
 
     /**
      * @var string
@@ -94,27 +99,51 @@ class ContentItem
     }
 
     /**
-     * Set url
+     * Set publicUrl
      *
-     * @param string $url
+     * @param string $publicUrl
      *
      * @return ContentItem
      */
-    public function setUrl($url)
+    public function setPublicUrl($publicUrl)
     {
-        $this->url = $url;
+        $this->publicUrl = $publicUrl;
 
         return $this;
     }
 
     /**
-     * Get url
+     * Get publicUrl
      *
      * @return string
      */
-    public function getUrl()
+    public function getPublicUrl()
     {
-        return $this->url;
+        return $this->publicUrl;
+    }
+
+    /**
+     * Set gaPath
+     *
+     * @param string $gaPath
+     *
+     * @return ContentItem
+     */
+    public function setGaPath($gaPath)
+    {
+        $this->gaPath = $gaPath;
+
+        return $this;
+    }
+
+    /**
+     * Get gaPath
+     *
+     * @return string
+     */
+    public function getGaPath()
+    {
+        return $this->gaPath;
     }
 
     /**

@@ -4,7 +4,10 @@ AppBundle\Entity\ContentItem:
         id:
             expose: true
             type: integer
-        url:
+        gaPath:
+            expose: true
+            type: string
+        publicUrl:
             expose: true
             type: string
         title:
@@ -16,6 +19,15 @@ AppBundle\Entity\ContentItem:
         author:
             expose: true
             type: string
+        visits:
+            expose: true
+            type: integer
+        bounceRate:
+            expose: true
+            type: float
+        avgTimeOnPage:
+            expose: true
+            type: float
         visitsPoints:
             expose: true
             type: integer
