@@ -50,5 +50,9 @@ Features:
     - [ ] comments number
     - [ ] ?bought subscriptions?
 
+# [Contributions welcome](http://contributionswelcome.org/)
+
+All contributions (no matter if small) are always welcome.
+
 [1]: http://www.niemanlab.org/2016/05/die-welts-analytics-system-de-emphasizes-clicks-and-demystifies-what-it-considers-a-quality-story/
 [2]: doc/installation.md
