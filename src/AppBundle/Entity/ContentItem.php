@@ -84,8 +84,11 @@ class ContentItem
 
     public function __construct()
     {
-        $this->valuesUpdatedDate = new \DateTime();
-        $this->pointsCalculatedDate = new \DateTime();
+        $dateTime = new \DateTime();
+        $dateTime->modify('-1 day');
+
+        $this->valuesUpdatedDate = $dateTime;
+        $this->pointsCalculatedDate = $dateTime;
     }
 
     /**
@@ -177,7 +180,7 @@ class ContentItem
      *
      * @return ContentItem
      */
-    public function setPublishedDate(\DateTime $publishedDate)
+    public function setPublishedDate(\DateTime $publishedDate = null)
     {
         $this->publishedDate = $publishedDate;
 

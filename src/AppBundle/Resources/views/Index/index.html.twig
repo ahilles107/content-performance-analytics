@@ -18,13 +18,25 @@ table.dataTable thead .sorting_desc_disabled:after {
 }
 </style>
 <div class="container-fluid">
-    <h1>Monitored content listing</h1>
+    <div class="row">
+        <div class="col-md-9">
+            <h3>Monitored content listing</h3>
+        </div>
+        <div class="col-md-3 ">
+            <button type="button" style="margin: 24px 0px;" class="btn btn-primary btn-lg pull-md-right" data-toggle="modal" data-target="#addNewContentModal">
+                Add new content
+            </button>
+        </div>
+    </div>
+
+    <div class="alerts"></div>
+
     <div class="row">
         <div class="col-md-12">
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th>Published date</th>
+                        <th>Published</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Visits</th>
@@ -35,7 +47,7 @@ table.dataTable thead .sorting_desc_disabled:after {
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Published date</th>
+                        <th>Published</th>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Visits</th>
@@ -50,6 +62,40 @@ table.dataTable thead .sorting_desc_disabled:after {
 </div>
 <script>
 $(document).ready(function() {
+    $('#publishedDate').datetimepicker({
+        format: 'YYYY-MM-DD hh:mm:ss',
+        icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-arrow-up",
+            down: "fa fa-arrow-down"
+        }
+    });
+
+    $("form#content_item").submit(function(e) {
+        $.ajax({
+            type: "POST",
+            url: "/content/",
+            data: $("#content_item").serializeArray(),
+            success: function(data) {
+                console.log(data);
+                $('.alerts').append('<div class="alert alert-success alert-content-success" role="alert">'+
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                    '<span aria-hidden="true">&times;</span>'+
+                  '</button>'+
+                  '<strong>Well done!</strong> New content was added.'+
+                '</div>');
+
+                $('#addNewContentModal').modal('hide');
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+
+        e.preventDefault();
+    });
+
     $('#example').DataTable({
         "paging": true,
         "serverSide": true,
@@ -87,24 +133,93 @@ $(document).ready(function() {
             {
                 "data": "visits_points",
                 "render": function (visits_points, action, data) {
+                    if (!data.visits) { data.visits = 0; }
+                    if (!visits_points) { visits_points = 0; }
                     return visits_points + " <small>("+ data.visits +")</small>";
                 }
             },
             {
                 "data": "bounce_rate_points",
                 "render": function (bounce_rate_points, action, data) {
+                    if (!data.bounce_rate) { data.bounce_rate = 0; }
+                    if (!bounce_rate_points) { bounce_rate_points = 0; }
                     return bounce_rate_points + " <small>("+ parseFloat(data.bounce_rate.toFixed(3)) +")</small>";
                 }
             },
             {
                 "data": "avg_time_on_page_points",
                 "render": function (avg_time_on_page_points, action, data) {
+                    if (!data.avg_time_on_page) { data.avg_time_on_page = 0; }
+                    if (!avg_time_on_page_points) { avg_time_on_page_points = 0; }
                     return avg_time_on_page_points + " <small>("+ parseFloat(data.avg_time_on_page.toFixed(3)) +")</small>";
                 }
             },
-            { "data": "total_points" }
+            {
+                "data": "total_points",
+                "render": function (total_points, action, data) {
+                    if (!total_points) { total_points = 0; }
+                    return total_points;
+                }
+
+            }
         ]
     });
 });
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="addNewContentModal" tabindex="-1" role="dialog" aria-labelledby="addNewContentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="addNewContentModalLabel">Add new content</h4>
+      </div>
+      <form id="content_item">
+      <div class="modal-body">
+              <div class="form-group row">
+                <label for="title" class="col-sm-2 form-control-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" required="true" name="content_item[title]" id="title" placeholder="Title">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="publicUrl" class="col-sm-2 form-control-label">Public Url</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" required="true" name="content_item[publicUrl]" id="publicUrl" placeholder="https://example.com/your-content-url">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="gaPath" class="col-sm-4 form-control-label">Google analytics tracked path for content</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" required="true" name="content_item[gaPath]" id="gaPath" placeholder="/your-content-url/">
+                </div>
+              </div>
+              <div class="alert alert-info" role="alert">
+                <strong>Info!</strong> Application will use that path for fetching statistics from Google Analytics API. Our pattern looks like that: `~^{provided-path}`. By default Google script sends value of `location.pathname`.
+              </div>
+              <div class="form-group row">
+                <label for="author" class="col-sm-2 form-control-label">Author</label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" required="true" name="content_item[author]" id="author" placeholder="John Doe">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="publishedDate" class="col-sm-2 form-control-label">Published Date</label>
+                <div class="col-sm-5">
+                  <input type="string" class="form-control" required="true" name="content_item[publishedDate]" id="publishedDate" placeholder="YYY-MM-dd h:i:s">
+                </div>
+              </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" id="send-content-form">Add</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
