@@ -117,11 +117,18 @@ $(document).ready(function() {
                 json.data = json.items;
 
                 return JSON.stringify( json ); // return JSON string
+            },
+            data: function (data) {
+                console.log(data);
+                var columnName = data.columns[data.order[0]['column']].data
+                data['sort'] = 'c.'+columnName;
+                data['direction'] = data.order[0]['dir'];
+                return data;
             }
         },
         "columns": [
             {
-                "data": "published_date",
+                "data": "publishedDate",
                 "render": function (data) {
                     var date = new Date(data);
                     var month = date.getMonth() + 1;
@@ -131,34 +138,34 @@ $(document).ready(function() {
             { "data": "title" },
             { "data": "author" },
             {
-                "data": "visits_points",
-                "render": function (visits_points, action, data) {
+                "data": "visitsPoints",
+                "render": function (visitsPoints, action, data) {
                     if (!data.visits) { data.visits = 0; }
-                    if (!visits_points) { visits_points = 0; }
-                    return visits_points + " <small>("+ data.visits +")</small>";
+                    if (!visitsPoints) { visitsPoints = 0; }
+                    return visitsPoints + " <small>("+ data.visits +")</small>";
                 }
             },
             {
-                "data": "bounce_rate_points",
-                "render": function (bounce_rate_points, action, data) {
-                    if (!data.bounce_rate) { data.bounce_rate = 0; }
-                    if (!bounce_rate_points) { bounce_rate_points = 0; }
-                    return bounce_rate_points + " <small>("+ parseFloat(data.bounce_rate.toFixed(3)) +")</small>";
+                "data": "bounceRatePoints",
+                "render": function (bounceRatePoints, action, data) {
+                    if (!data.bounceRate) { data.bounceRate = 0; }
+                    if (!bounceRatePoints) { bounceRatePoints = 0; }
+                    return bounceRatePoints + " <small>("+ parseFloat(data.bounceRate.toFixed(3)) +")</small>";
                 }
             },
             {
-                "data": "avg_time_on_page_points",
-                "render": function (avg_time_on_page_points, action, data) {
-                    if (!data.avg_time_on_page) { data.avg_time_on_page = 0; }
-                    if (!avg_time_on_page_points) { avg_time_on_page_points = 0; }
-                    return avg_time_on_page_points + " <small>("+ parseFloat(data.avg_time_on_page.toFixed(3)) +")</small>";
+                "data": "avgTimeOnPagePoints",
+                "render": function (avgTimeOnPagePoints, action, data) {
+                    if (!data.avgTimeOnPage) { data.avgTimeOnPage = 0; }
+                    if (!avgTimeOnPagePoints) { avgTimeOnPagePoints = 0; }
+                    return avgTimeOnPagePoints + " <small>("+ parseFloat(data.avgTimeOnPage.toFixed(3)) +")</small>";
                 }
             },
             {
-                "data": "total_points",
-                "render": function (total_points, action, data) {
-                    if (!total_points) { total_points = 0; }
-                    return total_points;
+                "data": "totalPoints",
+                "render": function (totalPoints, action, data) {
+                    if (!totalPoints) { totalPoints = 0; }
+                    return totalPoints;
                 }
 
             }

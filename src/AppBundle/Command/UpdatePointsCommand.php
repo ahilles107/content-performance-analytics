@@ -32,8 +32,8 @@ class UpdatePointsCommand extends ContainerAwareCommand
         $rows = [];
         foreach ($contentItems as $key => $item) {
             $pointsForVisits = $this->calculatePointsForVisits($item, $maxPointsViews, $goodValueViews);
-            $pointsForBounceRate = $this->calculatePointsForBounceRate($item, $maxPointsBounceRate, $goodValueBounceRate);
-            $pointsForAvgTimeOnPage = $this->calculatePointsForAvgTimeOnPage($item, $maxPointsAvgTimeOnPage, $goodValueAvgTimeOnPage);
+            $pointsForBounceRate = $this->calculatePointsForBounceRate($item, $maxPointsBounceRate, $goodValueBounceRate, $pointsForVisits);
+            $pointsForAvgTimeOnPage = $this->calculatePointsForAvgTimeOnPage($item, $maxPointsAvgTimeOnPage, $goodValueAvgTimeOnPage, $pointsForVisits);
             $item->setVisitsPoints($pointsForVisits);
             $item->setBounceRatePoints($pointsForBounceRate);
             $item->setAvgTimeOnPagePoints($pointsForAvgTimeOnPage);
@@ -75,8 +75,12 @@ class UpdatePointsCommand extends ContainerAwareCommand
         return $points >= $maxPoints ? $maxPoints : round($points);
     }
 
-    private function calculatePointsForBounceRate($item, $maxPoints, $goodValue)
+    private function calculatePointsForBounceRate($item, $maxPoints, $goodValue, $visitsPoints)
     {
+        if ($visitsPoints < 1) {
+            return 0;
+        }
+
         $bounceRateNumber = $item->getBounceRate();
         $treshold = ($maxPoints * 60) / 100;
         $points = $maxPoints - (($bounceRateNumber * $treshold) / $goodValue);
@@ -84,8 +88,12 @@ class UpdatePointsCommand extends ContainerAwareCommand
         return $points <= 0 ? $maxPoints : round($points) <= 0 ? 0 : round($points);
     }
 
-    private function calculatePointsForAvgTimeOnPage($item, $maxPoints, $goodValue)
+    private function calculatePointsForAvgTimeOnPage($item, $maxPoints, $goodValue, $visitsPoints)
     {
+        if ($visitsPoints < 1) {
+            return 0;
+        }
+
         $avgTimeOnPage = $item->getAvgTimeOnPage();
         $treshold = ($maxPoints * 60) / 100;
         $points = ($avgTimeOnPage * $treshold) / $goodValue;

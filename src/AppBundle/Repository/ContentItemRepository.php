@@ -17,7 +17,8 @@ class ContentItemRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getItems()
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c')
+            ->orderBy('c.publishedDate', 'desc');
 
         return $qb->getQuery();
     }

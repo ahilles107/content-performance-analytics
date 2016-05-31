@@ -7,15 +7,18 @@ AppBundle\Entity\ContentItem:
         gaPath:
             expose: true
             type: string
+            serialized_name: gaPath
         publicUrl:
             expose: true
             type: string
+            serialized_name: publicUrl
         title:
             expose: true
             type: string
         publishedDate:
             expose: true
             type: DateTime
+            serialized_name: publishedDate
         author:
             expose: true
             type: string
@@ -25,20 +28,26 @@ AppBundle\Entity\ContentItem:
         bounceRate:
             expose: true
             type: float
+            serialized_name: bounceRate
         avgTimeOnPage:
             expose: true
             type: float
+            serialized_name: avgTimeOnPage
         visitsPoints:
             expose: true
             type: integer
+            serialized_name: visitsPoints
         bounceRatePoints:
             expose: true
             type: integer
+            serialized_name: bounceRatePoints
         avgTimeOnPagePoints:
             expose: true
             type: integer
+            serialized_name: avgTimeOnPagePoints
         totalPoints:
             access_type: public_method
             read_only: true
             expose: true
             type: integer
+            serialized_name: totalPoints
