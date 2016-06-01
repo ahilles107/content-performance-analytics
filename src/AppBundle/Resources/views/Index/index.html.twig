@@ -102,6 +102,7 @@ $(document).ready(function() {
         "searching": false,
         "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
         "pageLength": 10,
+        "order": [[ 0, "desc" ]],
         "columnDefs": [
             {
                 targets: [ 0, 1, 2 ],
@@ -132,10 +133,24 @@ $(document).ready(function() {
                 "render": function (data) {
                     var date = new Date(data);
                     var month = date.getMonth() + 1;
-                    return (month.length > 1 ? month : "0" + month) + "/" + date.getDate() + "/" + date.getFullYear();
+                    var hr = date.getHours();
+                    var min = date.getMinutes();
+                    if (min < 10) {
+                        min = "0" + min;
+                    }
+                    var sec = date.getSeconds();
+                    if (sec < 10) {
+                        sec = "0" + sec;
+                    }
+                    return date.getFullYear() + "-" + (month.length > 1 ? month : "0" + month)+ "-" + date.getDate() + " " + hr + ":" + min + ":" + sec;
                 }
             },
-            { "data": "title" },
+            {
+                "data": "title",
+                "render": function (title, action, data) {
+                    return title + " <a href=\"" + data.publicUrl + "\" target=\"_blank\"><i class=\"fa fa-external-link\"></i></a>";
+                }
+            },
             { "data": "author" },
             {
                 "data": "visitsPoints",
