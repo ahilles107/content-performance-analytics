@@ -35,7 +35,10 @@ class ContentItemController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $paginator = $this->get('knp_paginator');
 
-        $contentItems = $em->getRepository('AppBundle:ContentItem')->getItems();
+        $contentItems = $em->getRepository('AppBundle:ContentItem')->getItems(
+            $request->get('start_date', null),
+            $request->get('end_date', null)
+        );
 
         $page = 1;
         if ($request->query->getInt('start') > 0) {

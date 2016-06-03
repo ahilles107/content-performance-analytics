@@ -32,7 +32,14 @@ table.dataTable thead .sorting_desc_disabled:after {
     <div class="alerts"></div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-2">
+            <div class="form-group">
+                <h5>Choose date range:</h5>
+                <input type="text" class="form-control" name="daterangepicker" value="" />
+                <hr />
+            </div>
+        </div>
+        <div class="col-md-10">
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -78,7 +85,6 @@ $(document).ready(function() {
             url: "/content/",
             data: $("#content_item").serializeArray(),
             success: function(data) {
-                console.log(data);
                 $('.alerts').append('<div class="alert alert-success alert-content-success" role="alert">'+
                   '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
                     '<span aria-hidden="true">&times;</span>'+
@@ -88,15 +94,18 @@ $(document).ready(function() {
 
                 $('#addNewContentModal').modal('hide');
             },
-            error: function(data) {
-                console.log(data);
-            }
+            error: function(data) {}
         });
 
         e.preventDefault();
     });
 
-    $('#example').DataTable({
+    var initialDateRange = {
+        'start': moment(),
+        'end': moment()
+    }
+
+    var table = $('#example').DataTable({
         "paging": true,
         "serverSide": true,
         "searching": false,
@@ -111,6 +120,7 @@ $(document).ready(function() {
         ],
         "ajax": {
             "url": "/content",
+            type: "GET",
             dataFilter: function(data){
                 var json = jQuery.parseJSON( data );
                 json.recordsTotal = json.totalItems;
@@ -120,10 +130,11 @@ $(document).ready(function() {
                 return JSON.stringify( json ); // return JSON string
             },
             data: function (data) {
-                console.log(data);
-                var columnName = data.columns[data.order[0]['column']].data
-                data['sort'] = 'c.'+columnName;
+                data['start_date'] = initialDateRange.start.format('YYYY-MM-DD');
+                data['end_date'] = initialDateRange.end.format('YYYY-MM-DD');
+                data['sort'] = 'c.'+data.columns[data.order[0]['column']].data;
                 data['direction'] = data.order[0]['dir'];
+
                 return data;
             }
         },
@@ -132,6 +143,10 @@ $(document).ready(function() {
                 "data": "publishedDate",
                 "render": function (data) {
                     var date = new Date(data);
+                    var day = date.getDate();
+                    if (day < 10) {
+                        day = "0" + day;
+                    }
                     var month = date.getMonth() + 1;
                     var hr = date.getHours();
                     var min = date.getMinutes();
@@ -142,7 +157,7 @@ $(document).ready(function() {
                     if (sec < 10) {
                         sec = "0" + sec;
                     }
-                    return date.getFullYear() + "-" + (month.length > 1 ? month : "0" + month)+ "-" + date.getDate() + " " + hr + ":" + min + ":" + sec;
+                    return date.getFullYear() + "-" + (month.length > 1 ? month : "0" + month)+ "-" + day + " " + hr + ":" + min + ":" + sec;
                 }
             },
             {
@@ -185,6 +200,31 @@ $(document).ready(function() {
 
             }
         ]
+    });
+
+    $('input[name="daterangepicker"]').daterangepicker({
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        "alwaysShowCalendars": true,
+        "startDate": moment(),
+        "endDate": moment(),
+        "maxDate": moment(),
+        "opens": "left",
+        locale: {
+              format: 'YYYY-MM-DD'
+        },
+        "applyClass": "btn-primary",
+        "cancelClass": "btn-warning"
+    }, function(start, end, label) {
+      initialDateRange.start = start;
+      initialDateRange.end = end;
+      table.draw('page');
     });
 });
 </script>

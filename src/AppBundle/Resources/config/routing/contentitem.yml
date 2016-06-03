@@ -1,7 +1,7 @@
 content_index:
     path:     /
     defaults: { _controller: "AppBundle:ContentItem:index" }
-    methods:  GET
+    methods:  [GET]
 
 content_show:
     path:     /{id}/
