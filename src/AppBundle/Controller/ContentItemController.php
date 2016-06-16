@@ -37,17 +37,18 @@ class ContentItemController extends FOSRestController
 
         $contentItems = $em->getRepository('AppBundle:ContentItem')->getItems(
             $request->get('start_date', null),
-            $request->get('end_date', null)
+            $request->get('end_date', null),
+            $request->get('author', null)
         );
 
         $page = 1;
         if ($request->query->getInt('start') > 0) {
-            $page = ($request->query->getInt('start', 50)/$request->query->getInt('length', 50)) + 1;
+            $page = ($request->query->getInt('start', 50) / $request->query->getInt('length', 50)) + 1;
         }
 
         $contentItems = $paginator->paginate(
             $contentItems,
-            $page, //$request->query->getInt('page', 1),
+            $page,
             $request->query->getInt('length', 50)
         );
 

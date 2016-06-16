@@ -38,6 +38,10 @@ table.dataTable thead .sorting_desc_disabled:after {
                 <input type="text" class="form-control" name="daterangepicker" value="" />
                 <hr />
             </div>
+            <div class="form-group">
+                <h5>Choose author:</h5>
+                <input type="text" class="form-control" name="author" value="" />
+            </div>
         </div>
         <div class="col-md-10">
             <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -105,6 +109,13 @@ $(document).ready(function() {
         'end': moment()
     }
 
+    var author = null;
+    $('input[name="author"]').change(function() {
+        console.log($(this), $(this).val());
+        author = $(this).val();
+        table.draw();
+    });
+
     var table = $('#example').DataTable({
         "paging": true,
         "serverSide": true,
@@ -134,6 +145,9 @@ $(document).ready(function() {
                 data['end_date'] = initialDateRange.end.format('YYYY-MM-DD');
                 data['sort'] = 'c.'+data.columns[data.order[0]['column']].data;
                 data['direction'] = data.order[0]['dir'];
+                if (author !== null) {
+                    data['author'] = author;
+                }
 
                 return data;
             }

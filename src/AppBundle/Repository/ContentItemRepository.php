@@ -15,18 +15,25 @@ class ContentItemRepository extends \Doctrine\ORM\EntityRepository
      *
      * @return \Doctrine\ORM\Query
      */
-    public function getItems($startDate = null, $endDate = null)
+    public function getItems($startDate = null, $endDate = null, $author = null)
     {
         $qb = $this->createQueryBuilder('c')
             ->orderBy('c.publishedDate', 'desc');
 
         if ($startDate && $endDate) {
+            $startDate = new \DateTime($startDate);
+            $endDate = new \DateTime($endDate);
+
             $qb->where('c.publishedDate >= :startDate')
                 ->andWhere('c.publishedDate <= :endDate')
                 ->setParameters([
-                    'startDate' => $startDate,
-                    'endDate' => $endDate
+                    'startDate' => $startDate->setTime(0, 0, 0),
+                    'endDate' => $endDate->setTime(23, 59, 59)
                 ]);
+        }
+
+        if ($author) {
+            $qb->andWhere('c.author = :author')->setParameter('author', $author);
         }
 
         return $qb->getQuery();
