@@ -27,7 +27,7 @@ RUN echo 'adminmap   postgres         postgres' >> /etc/postgresql/9.3/main/pg_i
 RUN echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 RUN chown -R postgres:postgres /data/
 
-# Install PHP5 and modules along with composer binary
+# Install PHP7 and modules along with composer binary
 RUN apt-get install -y curl git
 RUN apt-get -y install php7-fpm php7-pgsql php-apc php7-mcrypt php7-curl php7-gd php7-json php7-cli libssh2-php
 RUN sed -i -e "s/short_open_tag = Off/short_open_tag = On/g" /etc/php7/fpm/php.ini
