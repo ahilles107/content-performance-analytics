@@ -41,7 +41,7 @@ Features:
         - [ ] facebook
         - [ ] likes
         - [ ] tweets
-        - [ ] redit
+        - [ ] reddit
     - [x] views (GA)
     - [ ] scroll depth
     - [x] bounce rate (GA)
